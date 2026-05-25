@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agenda deportiva LATAM - Horarios, resultados y partidos en vivo hoy">
+    <title>Agenda Deportiva LATAM | Horarios y Resultados Hoy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0a0a1a;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #00d4ff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #00d4ff;
+            text-decoration: none;
+        }
+
+        .logo span { color: #ffffff; }
+
+        nav a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover { color: #00d4ff; }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid #1a1a3e;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .hero h1 span { color: #00d4ff; }
+
+        .hero p {
+            color: #aaa;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .fecha-hoy {
+            display: inline-block;
+            background: #00d4ff20;
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* AD BANNER TOP */
+        .ad-banner {
+            background: #1a1a2e;
+            border: 1px dashed #333;
+            text-align: center;
+            padding: 15px;
+            color: #555;
+            font-size: 0.8rem;
+            margin: 10px 20px;
+            border-radius: 8px;
+        }
+
+        /* MAIN LAYOUT */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.4rem; }
+        }
+
+        /* SECCIÓN PARTIDOS */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #00d4ff30;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* PARTIDO CARD */
+        .partido-card {
+            background: #1a1a2e;
+            border: 1px solid #2a2a4e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: border-color 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+
+        .partido-card:hover {
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .partido-card.en-vivo {
+            border-left: 3px solid #ff4444;
+        }
+
+        .partido-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .liga-badge {
+            background: #00d4ff20;
+            color: #00d4ff;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .partido-hora {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        .partido-hora.vivo {
+            color: #ff4444;
+            font-weight: 700;
+        }
+
+        .partido-equipos {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .equipo {
+            flex: 1;
+            text-align: center;
+        }
+
+        .equipo-nombre {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .equipo-escudo {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .marcador {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #00d4ff;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .canal-info {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #777;
+            text-align: center;
+        }
+
+        .canal-info span {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        /* SIDEBAR */
+        .sidebar {}
+
+        .widget {
+            background: #1a1a2e;
+            border: 1px solid #2a2a4e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .widget-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #2a2a4e;
+        }
+
+        .liga-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #1a1a3e;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .liga-item:hover { color: #00d4ff; }
+        .liga-item:last-child { border-bottom: none; }
+
+        .liga-flag { font-size: 1.2rem; }
+
+        .liga-nombre {
+            font-size: 0.85rem;
+            flex: 1;
+        }
+
+        .liga-count {
+            background: #2a2a4e;
+            color: #aaa;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+
+        /* AD SIDEBAR */
+        .ad-sidebar {
+            background: #1a1a2e;
+            border: 1px dashed #333;
+            border-radius: 12px;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            font-size: 0.8rem;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #555;
+        }
+
+        .spinner {
+            border: 3px solid #1a1a3e;
+            border-top: 3px solid #00d4ff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1a1a2e;
+            border-top: 1px solid #2a2a4e;
+            padding: 30px 20px;
+            text-align: center;
+            color: #555;
+            font-size: 0.85rem;
+            margin-top: 40px;
+        }
+
+        footer a { color: #00d4ff; text-decoration: none; }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid #2a2a4e;
+            background: transparent;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .tab.active, .tab:hover {
+            background: #00d4ff;
+            color: #000;
+            border-color: #00d4ff;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <a href="#" class="logo">⚽ Agenda<span>Deportiva</span></a>
+    <nav>
+        <a href="#">Hoy</a>
+        <a href="#">Resultados</a>
+        <a href="#">Ligas</a>
+    </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>Partidos de <span>Hoy</span> en LATAM</h1>
+    <p>Horarios, resultados y dónde ver cada partido en vivo</p>
+    <div class="fecha-hoy" id="fechaHoy">📅 Cargando fecha...</div>
+</div>
+
+<!-- AD BANNER TOP -->
+<div class="ad-banner">
+    📢 Espacio publicitario — Google AdSense irá aquí
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+    <!-- COLUMNA PRINCIPAL -->
+    <main>
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab active" onclick="filtrar('todos')">🔴 En Vivo</button>
+            <button class="tab" onclick="filtrar('hoy')">📅 Hoy</button>
+            <button class="tab" onclick="filtrar('manana')">⏭️ Mañana</button>
+        </div>
+
+        <!-- TÍTULO SECCIÓN -->
+        <div class="section-title">
+            <div class="live-dot"></div>
+            Partidos en vivo y próximos
+        </div>
+
+        <!-- PARTIDOS CONTAINER -->
+        <div id="partidos-container">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Cargando partidos...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <!-- AD SIDEBAR -->
+        <div class="ad-sidebar">
+            📢<br>Publicidad<br>AdSense aquí
+        </div>
+
+        <!-- LIGAS WIDGET -->
+        <div class="widget">
+            <div class="widget-title">🏆 Ligas Populares</div>
+            <div class="liga-item">
+                <span class="liga-flag">🇦🇷</span>
+                <span class="liga-nombre">Liga Argentina</span>
+                <span class="liga-count">8</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">🇲🇽</span>
+                <span class="liga-nombre">Liga MX</span>
+                <span class="liga-count">6</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">🇧🇷</span>
+                <span class="liga-nombre">Brasileirao</span>
+                <span class="liga-count">10</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">🇨🇴</span>
+                <span class="liga-nombre">Liga Colombia</span>
+                <span class="liga-count">4</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">🇨🇱</span>
+                <span class="liga-nombre">Primera Chile</span>
+                <span class="liga-count">5</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">🌎</span>
+                <span class="liga-nombre">Copa Libertadores</span>
+                <span class="liga-count">4</span>
+            </div>
+        </div>
+
+        <!-- WIDGET CANALES -->
+        <div class="widget">
+            <div class="widget-title">📺 Dónde Ver</div>
+            <div class="liga-item">
+                <span class="liga-flag">📡</span>
+                <span class="liga-nombre">ESPN</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">📡</span>
+                <span class="liga-nombre">Fox Sports</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">📡</span>
+                <span class="liga-nombre">TNT Sports</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">📡</span>
+                <span class="liga-nombre">Star+</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">📡</span>
+                <span class="liga-nombre">YouTube (gratis)</span>
+            </div>
+        </div>
+
+    </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p>⚽ <strong>AgendaDeportiva LATAM</strong> — Horarios y resultados deportivos</p>
+    <p style="margin-top:8px">
+        <a href="#">Inicio</a> · 
+        <a href="#">Privacidad</a> · 
+        <a href="#">Contacto</a>
+    </p>
+    <p style="margin-top:8px; font-size:0.75rem">
+        © 2025 AgendaDeportiva · Todos los derechos reservados
+    </p>
+</footer>
+
+<script>
+    // FECHA HOY
+    const fechaEl = document.getElementById('fechaHoy');
+    const hoy = new Date();
+    const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    fechaEl.textContent = '📅 ' + hoy.toLocaleDateString('es-ES', opciones);
+
+    // DATOS DE PARTIDOS (estáticos por ahora - luego conectamos API)
+    const partidos = [
+        {
+            liga: "Copa Libertadores",
+            hora: "EN VIVO",
+            vivo: true,
+            local: { nombre: "River Plate", escudo: "⚽" },
+            visitante: { nombre: "Flamengo", escudo: "⚽" },
+            marcador: "1 - 0",
+            canal: "ESPN · Star+"
+        },
+        {
+            liga: "Liga MX",
+            hora: "20:00 hrs",
+            vivo: false,
+            local: { nombre: "América", escudo: "⚽" },
+            visitante: { nombre: "Chivas", escudo: "⚽" },
+            marcador: "vs",
+            canal: "Fox Sports · TUDN"
+        },
+        {
+            liga: "Liga Argentina",
+            hora: "21:30 hrs",
+            vivo: false,
+            local: { nombre: "Boca Juniors", escudo: "⚽" },
+            visitante: { nombre: "San Lorenzo", escudo: "⚽" },
+            marcador: "vs",
+            canal: "TNT Sports"
+        },
+        {
+            liga: "Brasileirao",
+            hora: "19:00 hrs",
+            vivo: false,
+            local: { nombre: "Palmeiras", escudo: "⚽" },
+            visitante: { nombre: "Corinthians", escudo: "⚽" },
+            marcador: "vs",
+            canal: "ESPN Brasil"
+        },
+        {
+            liga: "Liga Colombia",
+            hora: "18:00 hrs",
+            vivo: false,
+            local: { nombre: "Millonarios", escudo: "⚽" },
+            visitante: { nombre: "Nacional", escudo: "⚽" },
+            marcador: "vs",
+            canal: "Win Sports"
+        }
+    ];
+
+    // RENDERIZAR PARTIDOS
+    function renderPartidos(lista) {
+        const container = document.getElementById('partidos-container');
+        
+        if (lista.length === 0) {
+            container.innerHTML = '<div class="loading"><p>No hay partidos en este momento</p></div>';
+            return;
+        }
+
+        container.innerHTML = lista.map(p => `
+            <div class="partido-card ${p.vivo ? 'en-vivo' : ''}">
+                <div class="partido-meta">
+                    <span class="liga-badge">🏆 ${p.liga}</span>
+                    <span class="partido-hora ${p.vivo ? 'vivo' : ''}">
+                        ${p.vivo ? '🔴 EN VIVO' : '⏰ ' + p.hora}
+                    </span>
+                </div>
+                <div class="partido-equipos">
+                    <div class="equipo">
+                        <span class="equipo-escudo">${p.local.escudo}</span>
+                        <div class="equipo-nombre">${p.local.nombre}</div>
+                    </div>
+                    <div class="marcador">${p.marcador}</div>
+                    <div class="equipo">
+                        <span class="equipo-escudo">${p.visitante.escudo}</span>
+                        <div class="equipo-nombre">${p.visitante.nombre}</div>
+                    </div>
+                </div>
+                <div class="canal-info">📺 Ver en: <span>${p.canal}</span></div>
+            </div>
+        `).join('');
+    }
+
+    // FILTROS
+    function filtrar(tipo) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        if (tipo === 'todos') {
+            renderPartidos(partidos.filter(p => p.vivo));
+        } else {
+            renderPartidos(partidos);
+        }
+    }
+
+    // INICIAR
+    renderPartidos(partidos);
+</script>
+
+</body>
+</html>
