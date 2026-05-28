@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agenda deportiva LATAM — Picks IA, resultados y partidos en vivo hoy">
+
+    <!-- ── Open Graph ──────────────────────────────────── -->
+    <meta property="og:type"        content="website">
+    <meta property="og:title"       content="AgendaDeportiva LATAM — Picks IA y resultados hoy">
+    <meta property="og:description" content="Predicciones IA + resultados en tiempo real para fans latinoamericanos. Gratis en Telegram.">
+    <meta property="og:url"         content="https://leitocuba.github.io/agenda-deportiva.github.io">
+    <meta property="og:locale"      content="es_LA">
+    <meta name="twitter:card"       content="summary_large_image">
+    <meta name="twitter:title"      content="AgendaDeportiva LATAM — Picks IA">
+
+    <title>Agenda Deportiva LATAM | Picks IA y Resultados Hoy</title>
+
+    <style>
+        /* ── Reset ─────────────────────────────────────── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0a0a1a;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* ── Header ────────────────────────────────────── */
+        header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #00d4ff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #00d4ff;
+            text-decoration: none;
+        }
+
+        .logo span { color: #ffffff; }
+
+        nav a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover { color: #00d4ff; }
+
+        /* ── CTA Strip (nuevo) ─────────────────────────── */
+        #cta-strip {
+            background: #f7c60a;
+            padding: 9px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        #cta-strip span {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0a0a1a;
+        }
+
+        #cta-strip a {
+            background: #0a0a1a;
+            color: #f7c60a;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── Hero ──────────────────────────────────────── */
+        .hero {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid #1a1a3e;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .hero h1 span { color: #00d4ff; }
+
+        .hero p {
+            color: #aaa;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .fecha-hoy {
+            display: inline-block;
+            background: #00d4ff20;
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* ── Status bar (nuevo) ────────────────────────── */
+        #status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 20px;
+            background: #0d0d1f;
+            border-bottom: 1px solid #1a1a3e;
+            font-size: 12px;
+            color: #555;
+        }
+
+        #status-bar .status-inner {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            flex-shrink: 0;
+        }
+
+        #status-dot.stale { background: #e63946; }
+
+        #refresh-btn {
+            background: none;
+            border: 1px solid #2a2a4e;
+            color: #555;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        #refresh-btn:hover { color: #00d4ff; border-color: #00d4ff; }
+
+        /* ── Layout ────────────────────────────────────── */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.4rem; }
+        }
+
+        /* ── Section title ─────────────────────────────── */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #00d4ff30;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ── Partido card ──────────────────────────────── */
+        .partido-card {
+            background: #1a1a2e;
+            border: 1px solid #2a2a4e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: border-color 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+
+        .partido-card:hover {
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .partido-card.en-vivo { border-left: 3px solid #ff4444; }
+        .partido-card.finalizado { border-left: 3px solid #22c55e; }
+
+        .partido-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .liga-badge {
+            background: #00d4ff20;
+            color: #00d4ff;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .partido-hora {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        .partido-hora.vivo {
+            color: #ff4444;
+            font-weight: 700;
+        }
+
+        .partido-hora.descanso {
+            color: #f7c60a;
+            font-weight: 700;
+        }
+
+        .partido-equipos {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .equipo { flex: 1; text-align: center; }
+
+        .equipo-nombre {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .equipo-escudo {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .marcador {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #00d4ff;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .partido-stale {
+            margin-top: 8px;
+            font-size: 11px;
+            color: #e63946;
+            text-align: center;
+        }
+
+        /* ── Pick card (nuevo) ─────────────────────────── */
+        .pick-card {
+            background: #1a1a2e;
+            border: 1px solid #2a2a4e;
+            border-left: 3px solid #f7c60a;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+
+        .pick-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .pick-matchup {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .pick-badge {
+            background: rgba(247,198,10,0.15);
+            color: #f7c60a;
+            border: 1px solid rgba(247,198,10,0.3);
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .pick-texto {
+            font-size: 0.88rem;
+            color: #ddd;
+            line-height: 1.65;
+            margin-bottom: 12px;
+        }
+
+        .pick-share-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 8px;
+            background: rgba(247,198,10,0.08);
+            border: 1px solid rgba(247,198,10,0.25);
+            border-radius: 8px;
+            color: #f7c60a;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Segoe UI', sans-serif;
+            transition: background 0.2s;
+        }
+
+        .pick-share-btn:hover { background: rgba(247,198,10,0.18); }
+
+        /* ── Sidebar ───────────────────────────────────── */
+        .widget {
+            background: #1a1a2e;
+            border: 1px solid #2a2a4e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .widget-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #2a2a4e;
+        }
+
+        /* Widget Telegram (nuevo) */
+        .widget-telegram {
+            border-color: #f7c60a40;
+            text-align: center;
+        }
+
+        .widget-telegram .widget-title { color: #f7c60a; }
+
+        .widget-telegram p {
+            font-size: 0.82rem;
+            color: #aaa;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .tg-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #f7c60a;
+            color: #0a0a1a;
+            font-weight: 800;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            transition: opacity 0.2s;
+        }
+
+        .tg-btn:hover { opacity: 0.88; }
+
+        .liga-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #1a1a3e;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .liga-item:hover { color: #00d4ff; }
+        .liga-item:last-child { border-bottom: none; }
+        .liga-flag { font-size: 1.2rem; }
+
+        .liga-nombre {
+            font-size: 0.85rem;
+            flex: 1;
+        }
+
+        .liga-count {
+            background: #2a2a4e;
+            color: #aaa;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+
+        /* ── Tabs ──────────────────────────────────────── */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid #2a2a4e;
+            background: transparent;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .tab.active, .tab:hover {
+            background: #00d4ff;
+            color: #000;
+            border-color: #00d4ff;
+            font-weight: 700;
+        }
+
+        /* ── Loading & empty ───────────────────────────── */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #555;
+        }
+
+        .spinner {
+            border: 3px solid #1a1a3e;
+            border-top: 3px solid #00d4ff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        /* ── Footer ────────────────────────────────────── */
+        footer {
+            background: #1a1a2e;
+            border-top: 1px solid #2a2a4e;
+            padding: 30px 20px;
+            text-align: center;
+            color: #555;
+            font-size: 0.85rem;
+            margin-top: 40px;
+        }
+
+        footer a { color: #00d4ff; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<!-- ── Header ────────────────────────────────────────── -->
+<header>
+    <a href="#" class="logo">⚽ Agenda<span>Deportiva</span></a>
+    <nav>
+        <a href="#">Hoy</a>
+        <a href="#">Resultados</a>
+        <a href="#">Ligas</a>
+    </nav>
+</header>
+
+<!-- ── CTA Strip ─────────────────────────────────────── -->
+<div id="cta-strip">
+    <span>⚡ Recibe picks IA y alertas en Telegram</span>
+    <a id="cta-strip-link" href="#">UNIRME →</a>
+</div>
+
+<!-- ── Hero ──────────────────────────────────────────── -->
+<div class="hero">
+    <h1>Partidos de <span>Hoy</span> en LATAM</h1>
+    <p>Picks IA + resultados en tiempo real para fans latinoamericanos</p>
+    <div class="fecha-hoy" id="fechaHoy">📅 Cargando...</div>
+</div>
+
+<!-- ── Status bar ────────────────────────────────────── -->
+<div id="status-bar">
+    <div class="status-inner">
+        <div id="status-dot"></div>
+        <span id="status-text">Conectando...</span>
+    </div>
+    <button id="refresh-btn" onclick="loadAndRender(true)">↻ Actualizar</button>
+</div>
+
+<!-- ── Main container ────────────────────────────────── -->
+<div class="container">
+
+    <!-- ── Columna principal ──────────────────────────── -->
+    <main>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" id="tab-vivo"     onclick="setTab('vivo',  this)">🔴 En Vivo</button>
+            <button class="tab"        id="tab-hoy"      onclick="setTab('hoy',   this)">📅 Hoy</button>
+            <button class="tab"        id="tab-manana"   onclick="setTab('manana',this)">⏭️ Mañana</button>
+        </div>
+
+        <!-- Partidos -->
+        <div class="section-title">
+            <div class="live-dot"></div>
+            Partidos
+        </div>
+        <div id="partidos-container">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Cargando partidos...</p>
+            </div>
+        </div>
+
+        <!-- Picks IA -->
+        <div class="section-title" style="margin-top:28px">
+            🤖 Picks IA
+        </div>
+        <div id="picks-container">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Cargando picks...</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ── Sidebar ────────────────────────────────────── -->
+    <aside>
+
+        <!-- Widget Telegram CTA -->
+        <div class="widget widget-telegram">
+            <div class="widget-title">⚡ Alertas en Telegram</div>
+            <p>Picks IA, goles y resúmenes en tiempo real.<br>Gratis para fans latinoamericanos.</p>
+            <a id="tg-sidebar-link" href="#" class="tg-btn" target="_blank" rel="noopener">
+                UNIRME AL BOT →
+            </a>
+        </div>
+
+        <!-- Widget Ligas -->
+        <div class="widget">
+            <div class="widget-title">🏆 Ligas Populares</div>
+            <div class="liga-item">
+                <span class="liga-flag">🇦🇷</span>
+                <span class="liga-nombre">Liga Argentina</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">🇲🇽</span>
+                <span class="liga-nombre">Liga MX</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">🇧🇷</span>
+                <span class="liga-nombre">Brasileirao</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">🇨🇴</span>
+                <span class="liga-nombre">Liga Colombia</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">🇨🇱</span>
+                <span class="liga-nombre">Primera Chile</span>
+            </div>
+            <div class="liga-item">
+                <span class="liga-flag">🌎</span>
+                <span class="liga-nombre">Copa Libertadores</span>
+            </div>
+        </div>
+
+        <!-- Widget Canales -->
+        <div class="widget">
+            <div class="widget-title">📺 Dónde Ver</div>
+            <div class="liga-item"><span class="liga-flag">📡</span><span class="liga-nombre">ESPN</span></div>
+            <div class="liga-item"><span class="liga-flag">📡</span><span class="liga-nombre">Fox Sports</span></div>
+            <div class="liga-item"><span class="liga-flag">📡</span><span class="liga-nombre">TNT Sports</span></div>
+            <div class="liga-item"><span class="liga-flag">📡</span><span class="liga-nombre">Star+</span></div>
+            <div class="liga-item"><span class="liga-flag">📡</span><span class="liga-nombre">YouTube (gratis)</span></div>
+        </div>
+
+    </aside>
+</div>
+
+<!-- ── Footer ────────────────────────────────────────── -->
+<footer>
+    <p>⚽ <strong>AgendaDeportiva LATAM</strong> — Picks IA · Horarios y resultados deportivos</p>
+    <p style="margin-top:8px">
+        <a href="#">Inicio</a> ·
+        <a href="#">Privacidad</a> ·
+        <a href="#">Contacto</a>
+    </p>
+    <p style="margin-top:8px; font-size:0.75rem">
+        Solo para entretenimiento · No somos casa de apuestas
+    </p>
+</footer>
+
+<script>
+    // ── ↓↓↓ CONFIGURACIÓN — CAMBIAR ANTES DE PUBLICAR ↓↓↓ ──
+    const CONFIG = {
+        telegramLink:      'https://t.me/YOUR_BOT_USERNAME',
+        refreshIntervalMs: 30 * 1000,
+        staleThresholdMin: 35
+    };
+
+    // ── Competiciones ────────────────────────────────────
+    const COMP = {
+        'FIFA_WORLD_CUP':        'Mundial 2026',
+        'CONMEBOL_LIBERTADORES': 'Libertadores',
+        'CONMEBOL_SUDAMERICANA': 'Sudamericana',
+        'UEFA_CHAMPIONS_LEAGUE': 'Champions',
+        'PREMIER_LEAGUE':        'Premier League',
+        'LIGA_MX':               'Liga MX',
+        'LIGA_ARGENTINA':        'Liga Argentina',
+    };
+
+    function compLabel(code) {
+        return COMP[code] || (code || '').replace(/_/g, ' ');
+    }
+
+    // ── Utils ─────────────────────────────────────────────
+    function timeAgo(iso) {
+        if (!iso) return 'desconocido';
+        const mins = Math.round((Date.now() - new Date(iso)) / 60000);
+        if (mins < 1)  return 'hace un momento';
+        if (mins === 1) return 'hace 1 min';
+        if (mins < 60)  return `hace ${mins} min`;
+        return `hace ${Math.floor(mins / 60)}h`;
+    }
+
+    function fmtTime(iso) {
+        try {
+            return new Date(iso).toLocaleTimeString('es', {
+                hour: '2-digit', minute: '2-digit'
+            }) + ' hrs';
+        } catch (_) { return ''; }
+    }
+
+    function escText(str) {
+        const d = document.createElement('div');
+        d.textContent = str || '';
+        return d.innerHTML;
+    }
+
+    function isStale(generatedAt) {
+        if (!generatedAt) return true;
+        return (Date.now() - new Date(generatedAt)) / 60000 > CONFIG.staleThresholdMin;
+    }
+
+    // ── Tabs ──────────────────────────────────────────────
+    let allMatches = [];
+    let activeTab  = 'vivo';
+
+    function setTab(tab, el) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        activeTab = tab;
+        renderMatchesByTab();
+    }
+
+    function filterByTab(matches, tab) {
+        if (tab === 'vivo') {
+            return matches.filter(m =>
+                m.status === 'LIVE' || m.status === 'HALF_TIME'
+            );
+        }
+        if (tab === 'manana') return [];   // live.json solo cubre hoy
+        return matches;                    // 'hoy' → todos
+    }
+
+    // ── Render partidos ───────────────────────────────────
+    function renderMatchesByTab() {
+        const filtered = filterByTab(allMatches, activeTab);
+        const container = document.getElementById('partidos-container');
+        container.innerHTML = '';
+
+        if (activeTab === 'manana') {
+            container.innerHTML = `
+                <div class="empty-state">
+                    ⏭️ Los partidos de mañana se actualizarán esta noche.
+                </div>`;
+            return;
+        }
+
+        if (filtered.length === 0) {
+            const msg = activeTab === 'vivo'
+                ? '⚽ No hay partidos en vivo ahora mismo.'
+                : '📭 No hay partidos cargados para hoy.';
+            container.innerHTML = `<div class="empty-state">${msg}</div>`;
+            return;
+        }
+
+        // Ordenar: LIVE → HALF_TIME → SCHEDULED → FINISHED
+        const ORDER = { LIVE: 0, HALF_TIME: 1, SCHEDULED: 2, FINISHED: 3 };
+        const sorted = [...filtered].sort(
+            (a, b) => (ORDER[a.status] ?? 4) - (ORDER[b.status] ?? 4)
+        );
+
+        sorted.forEach(m => {
+            const isLive     = m.status === 'LIVE';
+            const isHalf     = m.status === 'HALF_TIME';
+            const isFinished = m.status === 'FINISHED';
+            const hasScore   = isLive || isHalf || isFinished;
+
+            let horaStr  = '';
+            let horaClass = '';
+
+            if (isLive) {
+                horaStr   = m.minute ? `🔴 EN VIVO · ${m.minute}'` : '🔴 EN VIVO';
+                horaClass = 'vivo';
+            } else if (isHalf) {
+                horaStr   = '⏸ DESCANSO';
+                horaClass = 'descanso';
+            } else if (isFinished) {
+                horaStr = '✔ FINAL';
+            } else {
+                horaStr = `⏰ ${fmtTime(m.scheduled_at)}`;
+            }
+
+            const marcador = hasScore
+                ? `${m.score_home ?? 0} - ${m.score_away ?? 0}`
+                : 'vs';
+
+            const staleHtml = m.stale && m.last_polled_at
+                ? `<div class="partido-stale">⚠ Datos de ${timeAgo(m.last_polled_at)}</div>`
+                : '';
+
+            const card = document.createElement('div');
+            card.className = `partido-card ${isLive || isHalf ? 'en-vivo' : ''} ${isFinished ? 'finalizado' : ''}`;
+
+            card.innerHTML = `
+                <div class="partido-meta">
+                    <span class="liga-badge">🏆 ${escText(compLabel(m.competition_code))}</span>
+                    <span class="partido-hora ${horaClass}">${horaStr}</span>
+                </div>
+                <div class="partido-equipos">
+                    <div class="equipo">
+                        <span class="equipo-escudo">⚽</span>
+                        <div class="equipo-nombre">${escText(m.home_team)}</div>
+                    </div>
+                    <div class="marcador">${marcador}</div>
+                    <div class="equipo">
+                        <span class="equipo-escudo">⚽</span>
+                        <div class="equipo-nombre">${escText(m.away_team)}</div>
+                    </div>
+                </div>
+                ${staleHtml}
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // ── Render picks ──────────────────────────────────────
+    function renderPicks(picks) {
+        const container = document.getElementById('picks-container');
+        container.innerHTML = '';
+
+        if (!picks || picks.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    ⏳ Los picks IA estarán disponibles antes de cada partido.
+                </div>`;
+            return;
+        }
+
+        picks.forEach(pick => {
+            const matchup = [pick.home_team, pick.away_team]
+                .filter(Boolean).join(' vs ');
+
+            const shareText =
+                `⚽ Pick IA — ${matchup}\n\n${pick.content_text}\n\n${CONFIG.telegramLink}`;
+
+            const card = document.createElement('div');
+            card.className = 'pick-card';
+
+            // pick-texto usa textContent (no innerHTML) → seguro contra XSS (output LLM)
+            const pickP = document.createElement('p');
+            pickP.className = 'pick-texto';
+            pickP.textContent = pick.content_text || '';
+
+            card.innerHTML = `
+                <div class="pick-meta">
+                    <span class="pick-matchup">${escText(matchup)}</span>
+                    <span class="pick-badge">🤖 PICK IA</span>
+                </div>
+            `;
+            card.appendChild(pickP);
+
+            const shareBtn = document.createElement('button');
+            shareBtn.className = 'pick-share-btn';
+            shareBtn.innerHTML = '📤 Compartir con tu grupo';
+            shareBtn.onclick = () => shareContent(shareText);
+            card.appendChild(shareBtn);
+
+            container.appendChild(card);
+        });
+    }
+
+    // ── Status bar ────────────────────────────────────────
+    function updateStatus(generatedAt, error) {
+        const dot  = document.getElementById('status-dot');
+        const text = document.getElementById('status-text');
+
+        if (error) {
+            dot.className = 'stale';
+            text.textContent = 'Error al cargar datos';
+            return;
+        }
+
+        const stale = isStale(generatedAt);
+        dot.className = stale ? 'stale' : '';
+        text.textContent = stale
+            ? `⚠ Datos desactualizados (${timeAgo(generatedAt)})`
+            : `Actualizado ${timeAgo(generatedAt)}`;
+    }
+
+    // ── Share (Web Share API nativa en móvil) ─────────────
+    function shareContent(text) {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Pick IA — AgendaDeportiva',
+                text,
+                url: window.location.href
+            }).catch(() => {});
+        } else {
+            navigator.clipboard.writeText(text)
+                .then(() => alert('¡Copiado al portapapeles!'))
+                .catch(() => {});
+        }
+    }
+
+    // ── Fetch & render ────────────────────────────────────
+    async function loadAndRender(manual = false) {
+        if (manual) {
+            document.getElementById('partidos-container').innerHTML =
+                '<div class="loading"><div class="spinner"></div><p>Actualizando...</p></div>';
+        }
+
+        try {
+            const ts = Date.now();   // cache bust
+            const [liveRes, picksRes] = await Promise.all([
+                fetch(`./public/live.json?t=${ts}`),
+                fetch(`./public/picks.json?t=${ts}`)
+            ]);
+
+            const live  = liveRes.ok  ? await liveRes.json()  : null;
+            const picks = picksRes.ok ? await picksRes.json() : null;
+
+            allMatches = live?.matches ?? [];
+            renderMatchesByTab();
+            renderPicks(picks?.picks ?? []);
+            updateStatus(live?.generated_at ?? picks?.generated_at, false);
+
+        } catch (err) {
+            console.warn('AgendaDeportiva: error al cargar datos', err.message);
+            allMatches = [];
+            renderMatchesByTab();
+            renderPicks([]);
+            updateStatus(null, true);
+        }
+    }
+
+    // ── Init ──────────────────────────────────────────────
+    // Fecha
+    const hoy = new Date();
+    document.getElementById('fechaHoy').textContent =
+        '📅 ' + hoy.toLocaleDateString('es-ES', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+    // Links Telegram
+    [
+        document.getElementById('cta-strip-link'),
+        document.getElementById('tg-sidebar-link')
+    ].forEach(el => { if (el) el.href = CONFIG.telegramLink; });
+
+    // Cargar datos
+    loadAndRender();
+    setInterval(loadAndRender, CONFIG.refreshIntervalMs);
+</script>
+
+</body>
+</html>
