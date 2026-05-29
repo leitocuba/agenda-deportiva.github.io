@@ -4,141 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Agenda deportiva LATAM — Picks IA, resultados y partidos en vivo hoy">
-    <meta name="theme-color" content="#0a0a1a">
-    <meta name="color-scheme" content="dark">
 
-    <!-- ── Open Graph & Twitter Card ────────────────────────── -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="AgendaDeportiva LATAM — Picks IA y resultados hoy">
+    <!-- ── Open Graph ──────────────────────────────────── -->
+    <meta property="og:type"        content="website">
+    <meta property="og:title"       content="AgendaDeportiva LATAM — Picks IA y resultados hoy">
     <meta property="og:description" content="Predicciones IA + resultados en tiempo real para fans latinoamericanos. Gratis en Telegram.">
-    <meta property="og:url" content="https://leitocuba.github.io/agenda-deportiva.github.io">
-    <meta property="og:locale" content="es_LA">
-    <meta property="og:site_name" content="AgendaDeportiva LATAM">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="AgendaDeportiva LATAM — Picks IA">
-    <meta name="twitter:description" content="Predicciones IA + resultados en tiempo real">
-
-    <!-- ── Seguridad & Referrer ──────────────────────────────── -->
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <!-- ── Preload críticos ──────────────────────────────────── -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://t.me">
+    <meta property="og:url"         content="https://leitocuba.github.io/agenda-deportiva.github.io">
+    <meta property="og:locale"      content="es_LA">
+    <meta name="twitter:card"       content="summary_large_image">
+    <meta name="twitter:title"      content="AgendaDeportiva LATAM — Picks IA">
 
     <title>Agenda Deportiva LATAM | Picks IA y Resultados Hoy</title>
 
     <style>
-        /* ── Reset & variables ─────────────────────────────────── */
-        :root {
-            --color-primary: #00d4ff;
-            --color-accent: #f7c60a;
-            --color-danger: #ff4444;
-            --color-success: #22c55e;
-            --color-bg-dark: #0a0a1a;
-            --color-bg-card: #1a1a2e;
-            --color-border: #2a2a4e;
-            --color-text-primary: #ffffff;
-            --color-text-secondary: #aaa;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        /* ── Reset ─────────────────────────────────────── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--color-bg-dark);
-            color: var(--color-text-primary);
+            font-family: 'Segoe UI', sans-serif;
+            background: #0a0a1a;
+            color: #ffffff;
             min-height: 100vh;
-            line-height: 1.6;
         }
 
-        /* ── Header ────────────────────────────────────────────── */
+        /* ── Header ────────────────────────────────────── */
         header {
             background: linear-gradient(135deg, #1a1a2e, #16213e);
             padding: 15px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 3px solid var(--color-primary);
+            border-bottom: 3px solid #00d4ff;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 8px rgba(0, 212, 255, 0.1);
         }
 
         .logo {
             font-size: 1.5rem;
             font-weight: 800;
-            color: var(--color-primary);
+            color: #00d4ff;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: opacity 0.3s;
         }
 
-        .logo:hover {
-            opacity: 0.88;
-        }
-
-        .logo span {
-            color: var(--color-text-primary);
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+        .logo span { color: #ffffff; }
 
         nav a {
-            color: var(--color-text-secondary);
+            color: #aaa;
             text-decoration: none;
+            margin-left: 20px;
             font-size: 0.9rem;
             transition: color 0.3s;
-            position: relative;
         }
 
-        nav a:hover,
-        nav a:focus {
-            color: var(--color-primary);
-            outline: none;
-        }
+        nav a:hover { color: #00d4ff; }
 
-        nav a:focus-visible {
-            outline: 2px solid var(--color-primary);
-            outline-offset: 4px;
-            border-radius: 4px;
-        }
-
-        /* ── CTA Strip ─────────────────────────────────────────── */
+        /* ── CTA Strip ─────────────────────────────────── */
         #cta-strip {
-            background: var(--color-accent);
+            background: #f7c60a;
             padding: 9px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            flex-wrap: wrap;
         }
 
         #cta-strip span {
             font-size: 13px;
             font-weight: 700;
-            color: var(--color-bg-dark);
+            color: #0a0a1a;
         }
 
         #cta-strip a {
-            background: var(--color-bg-dark);
-            color: var(--color-accent);
+            background: #0a0a1a;
+            color: #f7c60a;
             font-size: 12px;
             font-weight: 700;
             padding: 6px 14px;
@@ -146,17 +85,9 @@
             white-space: nowrap;
             letter-spacing: 0.03em;
             text-decoration: none;
-            transition: transform 0.2s, opacity 0.2s;
-            cursor: pointer;
         }
 
-        #cta-strip a:hover,
-        #cta-strip a:focus {
-            opacity: 0.88;
-            transform: scale(1.02);
-        }
-
-        /* ── Hero ──────────────────────────────────────────────── */
+        /* ── Hero ──────────────────────────────────────── */
         .hero {
             background: linear-gradient(135deg, #16213e, #0f3460);
             padding: 40px 20px;
@@ -167,31 +98,29 @@
         .hero h1 {
             font-size: 2rem;
             margin-bottom: 10px;
-            color: var(--color-text-primary);
+            color: #ffffff;
         }
 
-        .hero h1 span {
-            color: var(--color-primary);
-        }
+        .hero h1 span { color: #00d4ff; }
 
         .hero p {
-            color: var(--color-text-secondary);
+            color: #aaa;
             font-size: 1rem;
             margin-bottom: 20px;
         }
 
         .fecha-hoy {
             display: inline-block;
-            background: rgba(0, 212, 255, 0.12);
-            border: 1px solid var(--color-primary);
-            color: var(--color-primary);
+            background: #00d4ff20;
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
             padding: 8px 20px;
             border-radius: 20px;
             font-size: 0.9rem;
             font-weight: 600;
         }
 
-        /* ── Status bar ────────────────────────────────────────── */
+        /* ── Status bar ────────────────────────────────── */
         #status-bar {
             display: flex;
             align-items: center;
@@ -201,8 +130,6 @@
             border-bottom: 1px solid #1a1a3e;
             font-size: 12px;
             color: #555;
-            flex-wrap: wrap;
-            gap: 10px;
         }
 
         #status-bar .status-inner {
@@ -215,34 +142,26 @@
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background: var(--color-success);
+            background: #22c55e;
             flex-shrink: 0;
         }
 
-        #status-dot.stale {
-            background: var(--color-danger);
-        }
+        #status-dot.stale { background: #e63946; }
 
         #refresh-btn {
             background: none;
-            border: 1px solid var(--color-border);
+            border: 1px solid #2a2a4e;
             color: #555;
             font-size: 11px;
             padding: 3px 10px;
             border-radius: 8px;
             cursor: pointer;
             font-family: 'Segoe UI', sans-serif;
-            transition: all 0.2s;
         }
 
-        #refresh-btn:hover,
-        #refresh-btn:focus {
-            color: var(--color-primary);
-            border-color: var(--color-primary);
-            outline: none;
-        }
+        #refresh-btn:hover { color: #00d4ff; border-color: #00d4ff; }
 
-        /* ── Layout ────────────────────────────────────────────── */
+        /* ── Layout ────────────────────────────────────── */
         .container {
             max-width: 1100px;
             margin: 0 auto;
@@ -253,25 +172,18 @@
         }
 
         @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            .hero h1 {
-                font-size: 1.4rem;
-            }
-            nav {
-                gap: 15px;
-            }
+            .container { grid-template-columns: 1fr; }
+            .hero h1   { font-size: 1.4rem; }
         }
 
-        /* ── Section title ─────────────────────────────────────── */
+        /* ── Section title ─────────────────────────────── */
         .section-title {
             font-size: 1.1rem;
             font-weight: 700;
-            color: var(--color-primary);
+            color: #00d4ff;
             margin-bottom: 15px;
             padding-bottom: 8px;
-            border-bottom: 2px solid rgba(0, 212, 255, 0.19);
+            border-bottom: 2px solid #00d4ff30;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -280,48 +192,31 @@
         .live-dot {
             width: 8px;
             height: 8px;
-            background: var(--color-danger);
+            background: #ff4444;
             border-radius: 50%;
             animation: pulse 1s infinite;
             flex-shrink: 0;
-            aria-hidden: true;
         }
 
         @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.3;
-            }
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.3; }
         }
 
-        /* ── Partido card ──────────────────────────────────────── */
+        /* ── Partido card ──────────────────────────────── */
         .partido-card {
-            background: var(--color-bg-card);
-            border: 1px solid var(--color-border);
+            background: #1a1a2e;
+            border: 1px solid #2a2a4e;
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 12px;
-            transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            transition: border-color 0.3s, transform 0.2s;
             cursor: pointer;
         }
 
-        .partido-card:hover,
-        .partido-card:focus-within {
-            border-color: var(--color-primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.1);
-            outline: none;
-        }
-
-        .partido-card.en-vivo {
-            border-left: 3px solid var(--color-danger);
-        }
-
-        .partido-card.finalizado {
-            border-left: 3px solid var(--color-success);
-        }
+        .partido-card:hover      { border-color: #00d4ff; transform: translateY(-2px); }
+        .partido-card.en-vivo    { border-left: 3px solid #ff4444; }
+        .partido-card.finalizado { border-left: 3px solid #22c55e; }
 
         .partido-meta {
             display: flex;
@@ -331,28 +226,17 @@
         }
 
         .liga-badge {
-            background: rgba(0, 212, 255, 0.12);
-            color: var(--color-primary);
+            background: #00d4ff20;
+            color: #00d4ff;
             padding: 3px 10px;
             border-radius: 10px;
             font-size: 0.75rem;
             font-weight: 600;
         }
 
-        .partido-hora {
-            font-size: 0.85rem;
-            color: var(--color-text-secondary);
-        }
-
-        .partido-hora.vivo {
-            color: var(--color-danger);
-            font-weight: 700;
-        }
-
-        .partido-hora.descanso {
-            color: var(--color-accent);
-            font-weight: 700;
-        }
+        .partido-hora          { font-size: 0.85rem; color: #aaa; }
+        .partido-hora.vivo     { color: #ff4444; font-weight: 700; }
+        .partido-hora.descanso { color: #f7c60a; font-weight: 700; }
 
         .partido-equipos {
             display: flex;
@@ -361,28 +245,24 @@
             gap: 10px;
         }
 
-        .equipo {
-            flex: 1;
-            text-align: center;
-        }
+        .equipo { flex: 1; text-align: center; }
 
         .equipo-nombre {
             font-size: 0.95rem;
             font-weight: 700;
-            color: var(--color-text-primary);
+            color: #fff;
         }
 
         .equipo-escudo {
             font-size: 2rem;
             display: block;
             margin-bottom: 5px;
-            aria-hidden: true;
         }
 
         .marcador {
             font-size: 1.8rem;
             font-weight: 900;
-            color: var(--color-primary);
+            color: #00d4ff;
             min-width: 80px;
             text-align: center;
         }
@@ -390,27 +270,18 @@
         .partido-stale {
             margin-top: 8px;
             font-size: 11px;
-            color: var(--color-danger);
+            color: #e63946;
             text-align: center;
         }
 
-        /* ── Pick card ─────────────────────────────────────────── */
+        /* ── Pick card ─────────────────────────────────── */
         .pick-card {
-            background: var(--color-bg-card);
-            border: 1px solid var(--color-border);
-            border-left: 3px solid var(--color-accent);
+            background: #1a1a2e;
+            border: 1px solid #2a2a4e;
+            border-left: 3px solid #f7c60a;
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 12px;
-            transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
-        }
-
-        .pick-card:hover,
-        .pick-card:focus-within {
-            border-color: var(--color-accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(247, 198, 10, 0.1);
-            outline: none;
         }
 
         .pick-meta {
@@ -420,16 +291,12 @@
             margin-bottom: 8px;
         }
 
-        .pick-matchup {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--color-text-primary);
-        }
+        .pick-matchup { font-size: 0.9rem; font-weight: 700; color: #fff; }
 
         .pick-badge {
-            background: rgba(247, 198, 10, 0.15);
-            color: var(--color-accent);
-            border: 1px solid rgba(247, 198, 10, 0.3);
+            background: rgba(247,198,10,0.15);
+            color: #f7c60a;
+            border: 1px solid rgba(247,198,10,0.3);
             padding: 3px 10px;
             border-radius: 10px;
             font-size: 0.72rem;
@@ -451,10 +318,10 @@
             gap: 6px;
             width: 100%;
             padding: 8px;
-            background: rgba(247, 198, 10, 0.08);
-            border: 1px solid rgba(247, 198, 10, 0.25);
+            background: rgba(247,198,10,0.08);
+            border: 1px solid rgba(247,198,10,0.25);
             border-radius: 8px;
-            color: var(--color-accent);
+            color: #f7c60a;
             font-size: 0.82rem;
             font-weight: 600;
             cursor: pointer;
@@ -462,16 +329,12 @@
             transition: background 0.2s;
         }
 
-        .pick-share-btn:hover,
-        .pick-share-btn:focus {
-            background: rgba(247, 198, 10, 0.18);
-            outline: none;
-        }
+        .pick-share-btn:hover { background: rgba(247,198,10,0.18); }
 
-        /* ── Sidebar ───────────────────────────────────────────── */
+        /* ── Sidebar ───────────────────────────────────── */
         .widget {
-            background: var(--color-bg-card);
-            border: 1px solid var(--color-border);
+            background: #1a1a2e;
+            border: 1px solid #2a2a4e;
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
@@ -480,25 +343,18 @@
         .widget-title {
             font-size: 0.95rem;
             font-weight: 700;
-            color: var(--color-primary);
+            color: #00d4ff;
             margin-bottom: 12px;
             padding-bottom: 8px;
-            border-bottom: 1px solid var(--color-border);
+            border-bottom: 1px solid #2a2a4e;
         }
 
-        /* Widget Telegram */
-        .widget-telegram {
-            border-color: rgba(247, 198, 10, 0.25);
-            text-align: center;
-        }
-
-        .widget-telegram .widget-title {
-            color: var(--color-accent);
-        }
+        .widget-telegram            { border-color: #f7c60a40; text-align: center; }
+        .widget-telegram .widget-title { color: #f7c60a; }
 
         .widget-telegram p {
             font-size: 0.82rem;
-            color: var(--color-text-secondary);
+            color: #aaa;
             margin-bottom: 14px;
             line-height: 1.5;
         }
@@ -507,24 +363,19 @@
             display: block;
             width: 100%;
             padding: 10px;
-            background: var(--color-accent);
-            color: var(--color-bg-dark);
+            background: #f7c60a;
+            color: #0a0a1a;
             font-weight: 800;
             font-size: 0.9rem;
             border: none;
             border-radius: 8px;
             text-decoration: none;
             letter-spacing: 0.04em;
-            transition: opacity 0.2s, transform 0.2s;
+            transition: opacity 0.2s;
             cursor: pointer;
         }
 
-        .tg-btn:hover,
-        .tg-btn:focus {
-            opacity: 0.88;
-            transform: scale(1.02);
-            outline: none;
-        }
+        .tg-btn:hover { opacity: 0.88; }
 
         .liga-item {
             display: flex;
@@ -534,83 +385,50 @@
             border-bottom: 1px solid #1a1a3e;
             cursor: pointer;
             transition: color 0.2s;
-            border-radius: 4px;
-            padding: 8px 4px;
         }
 
-        .liga-item:hover,
-        .liga-item:focus {
-            color: var(--color-primary);
-            background: rgba(0, 212, 255, 0.05);
-            outline: none;
-        }
+        .liga-item:hover      { color: #00d4ff; }
+        .liga-item:last-child { border-bottom: none; }
+        .liga-flag            { font-size: 1.2rem; }
 
-        .liga-item:last-child {
-            border-bottom: none;
-        }
-
-        .liga-flag {
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .liga-nombre {
-            font-size: 0.85rem;
-            flex: 1;
-        }
+        .liga-nombre { font-size: 0.85rem; flex: 1; }
 
         .liga-count {
-            background: var(--color-border);
-            color: var(--color-text-secondary);
+            background: #2a2a4e;
+            color: #aaa;
             padding: 2px 8px;
             border-radius: 10px;
             font-size: 0.75rem;
         }
 
-        /* ── Tabs ──────────────────────────────────────────────── */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
+        /* ── Tabs ──────────────────────────────────────── */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
 
         .tab {
             padding: 8px 18px;
             border-radius: 20px;
-            border: 1px solid var(--color-border);
+            border: 1px solid #2a2a4e;
             background: transparent;
-            color: var(--color-text-secondary);
+            color: #aaa;
             cursor: pointer;
             font-size: 0.85rem;
             transition: all 0.3s;
             font-family: 'Segoe UI', sans-serif;
-            font-weight: 500;
         }
 
-        .tab:hover,
-        .tab.active {
-            background: var(--color-primary);
-            color: var(--color-bg-dark);
-            border-color: var(--color-primary);
+        .tab.active, .tab:hover {
+            background: #00d4ff;
+            color: #000;
+            border-color: #00d4ff;
             font-weight: 700;
         }
 
-        .tab:focus-visible {
-            outline: 2px solid var(--color-primary);
-            outline-offset: 2px;
-        }
-
-        /* ── Loading & empty ───────────────────────────────────── */
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #555;
-        }
+        /* ── Loading & empty ───────────────────────────── */
+        .loading { text-align: center; padding: 40px; color: #555; }
 
         .spinner {
             border: 3px solid #1a1a3e;
-            border-top: 3px solid var(--color-primary);
+            border-top: 3px solid #00d4ff;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -619,25 +437,16 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 30px;
-            color: #555;
-            font-size: 0.9rem;
-        }
+        .empty-state { text-align: center; padding: 30px; color: #555; font-size: 0.9rem; }
 
-        /* ── Footer ────────────────────────────────────────────── */
+        /* ── Footer ────────────────────────────────────── */
         footer {
-            background: var(--color-bg-card);
-            border-top: 1px solid var(--color-border);
+            background: #1a1a2e;
+            border-top: 1px solid #2a2a4e;
             padding: 30px 20px;
             text-align: center;
             color: #555;
@@ -645,163 +454,117 @@
             margin-top: 40px;
         }
 
-        footer a {
-            color: var(--color-primary);
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        footer a:hover,
-        footer a:focus {
-            opacity: 0.88;
-        }
-
-        footer a:focus-visible {
-            outline: 2px solid var(--color-primary);
-            outline-offset: 4px;
-        }
+        footer a { color: #00d4ff; text-decoration: none; }
     </style>
 </head>
 <body>
 
-<!-- ── Header ────────────────────────────────────────────── -->
-<header role="banner">
-    <a href="#main" class="logo">⚽ Agenda<span>Deportiva</span></a>
-    <nav role="navigation" aria-label="Navegación principal">
-        <a href="#hoy">Hoy</a>
-        <a href="#resultados">Resultados</a>
-        <a href="#ligas">Ligas</a>
+<!-- ── Header ────────────────────────────────────────── -->
+<header>
+    <a href="#" class="logo">⚽ Agenda<span>Deportiva</span></a>
+    <nav>
+        <a href="#">Hoy</a>
+        <a href="#">Resultados</a>
+        <a href="#">Ligas</a>
     </nav>
 </header>
 
-<!-- ── CTA Strip ──────────────────────────────────────────── -->
-<div id="cta-strip" role="region" aria-label="Llamada a la acción">
+<!-- ── CTA Strip ─────────────────────────────────────── -->
+<div id="cta-strip">
     <span>⚡ Recibe picks IA y alertas en Telegram</span>
-    <a id="cta-strip-link" href="https://t.me/agendafutbol_bot" target="_blank" rel="noopener" aria-label="Unirse al bot de Telegram">UNIRME →</a>
+    <a id="cta-strip-link" href="https://t.me/agendafutbol_bot" target="_blank" rel="noopener">UNIRME →</a>
 </div>
 
-<!-- ── Hero ──────────────────────────────────────────────── -->
-<section class="hero" aria-label="Encabezado principal">
+<!-- ── Hero ──────────────────────────────────────────── -->
+<div class="hero">
     <h1>Partidos de <span>Hoy</span> en LATAM</h1>
     <p>Picks IA + resultados en tiempo real para fans latinoamericanos</p>
-    <div class="fecha-hoy" id="fechaHoy" aria-label="Fecha actual">📅 Cargando...</div>
-</section>
-
-<!-- ── Status bar ──────────────────────────────────────────── -->
-<div id="status-bar" role="status" aria-live="polite" aria-label="Estado de los datos">
-    <div class="status-inner">
-        <div id="status-dot" aria-hidden="true"></div>
-        <span id="status-text">Conectando...</span>
-    </div>
-    <button id="refresh-btn" aria-label="Actualizar datos">↻ Actualizar</button>
+    <div class="fecha-hoy" id="fechaHoy">📅 Cargando...</div>
 </div>
 
-<!-- ── Main container ──────────────────────────────────── -->
+<!-- ── Status bar ────────────────────────────────────── -->
+<div id="status-bar">
+    <div class="status-inner">
+        <div id="status-dot"></div>
+        <span id="status-text">Conectando...</span>
+    </div>
+    <button id="refresh-btn" onclick="loadAndRender(true)">↻ Actualizar</button>
+</div>
+
+<!-- ── Main container ────────────────────────────────── -->
 <div class="container">
 
-    <!-- ── Columna principal ──────────────────────────────── -->
-    <main id="main" role="main">
+    <!-- ── Columna principal ──────────────────────────── -->
+    <main>
 
-        <!-- Tabs -->
-        <div class="tabs" role="tablist" aria-label="Filtros de partidos">
-            <button class="tab active" id="tab-vivo" role="tab" aria-selected="true" aria-controls="partidos-container">🔴 En Vivo</button>
-            <button class="tab" id="tab-hoy" role="tab" aria-selected="false" aria-controls="partidos-container">📅 Hoy</button>
-            <button class="tab" id="tab-manana" role="tab" aria-selected="false" aria-controls="partidos-container">⏭️ Mañana</button>
+        <div class="tabs">
+            <button class="tab active" id="tab-vivo"   onclick="setTab('vivo',  this)">🔴 En Vivo</button>
+            <button class="tab"        id="tab-hoy"    onclick="setTab('hoy',   this)">📅 Hoy</button>
+            <button class="tab"        id="tab-manana" onclick="setTab('manana',this)">⏭️ Mañana</button>
         </div>
 
-        <!-- Partidos -->
-        <section aria-label="Partidos">
-            <h2 class="section-title">
-                <div class="live-dot" aria-hidden="true"></div>
-                Partidos
-            </h2>
-            <div id="partidos-container" role="region" aria-label="Lista de partidos" aria-live="polite">
-                <div class="loading">
-                    <div class="spinner" aria-hidden="true"></div>
-                    <p>Cargando partidos...</p>
-                </div>
+        <div class="section-title">
+            <div class="live-dot"></div>
+            Partidos
+        </div>
+        <div id="partidos-container">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Cargando partidos...</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Picks IA -->
-        <section aria-label="Picks de IA">
-            <h2 class="section-title">
-                🤖 Picks IA
-            </h2>
-            <div id="picks-container" role="region" aria-label="Picks de IA" aria-live="polite">
-                <div class="loading">
-                    <div class="spinner" aria-hidden="true"></div>
-                    <p>Cargando picks...</p>
-                </div>
+        <div class="section-title" style="margin-top:28px">
+            🤖 Picks IA
+        </div>
+        <div id="picks-container">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Cargando picks...</p>
             </div>
-        </section>
+        </div>
 
     </main>
 
-    <!-- ── Sidebar ──────────────────────────────────────── -->
-    <aside role="complementary" aria-label="Información complementaria">
+    <!-- ── Sidebar ────────────────────────────────────── -->
+    <aside>
 
-        <!-- Widget Telegram CTA -->
         <div class="widget widget-telegram">
-            <h3 class="widget-title">⚡ Alertas en Telegram</h3>
+            <div class="widget-title">⚡ Alertas en Telegram</div>
             <p>Picks IA, goles y resúmenes en tiempo real.<br>Gratis para fans latinoamericanos.</p>
-            <a href="https://t.me/agendafutbol_bot" class="tg-btn" target="_blank" rel="noopener noreferrer" aria-label="Unirse al bot de Telegram AgendaDeportiva">
+            <a href="https://t.me/agendafutbol_bot" class="tg-btn" target="_blank" rel="noopener">
                 UNIRME AL BOT →
             </a>
         </div>
 
-        <!-- Widget Ligas -->
         <div class="widget">
-            <h3 class="widget-title">🏆 Ligas Populares</h3>
-            <nav aria-label="Ligas de fútbol" role="navigation">
-                <div class="liga-item" tabindex="0" role="button" aria-label="Liga Argentina">
-                    <span class="liga-flag" aria-hidden="true">🇦🇷</span>
-                    <span class="liga-nombre">Liga Argentina</span>
-                </div>
-                <div class="liga-item" tabindex="0" role="button" aria-label="Liga MX">
-                    <span class="liga-flag" aria-hidden="true">🇲🇽</span>
-                    <span class="liga-nombre">Liga MX</span>
-                </div>
-                <div class="liga-item" tabindex="0" role="button" aria-label="Brasileirao">
-                    <span class="liga-flag" aria-hidden="true">🇧🇷</span>
-                    <span class="liga-nombre">Brasileirao</span>
-                </div>
-                <div class="liga-item" tabindex="0" role="button" aria-label="Liga Colombia">
-                    <span class="liga-flag" aria-hidden="true">🇨🇴</span>
-                    <span class="liga-nombre">Liga Colombia</span>
-                </div>
-                <div class="liga-item" tabindex="0" role="button" aria-label="Primera División Chile">
-                    <span class="liga-flag" aria-hidden="true">🇨🇱</span>
-                    <span class="liga-nombre">Primera Chile</span>
-                </div>
-                <div class="liga-item" tabindex="0" role="button" aria-label="Copa Libertadores">
-                    <span class="liga-flag" aria-hidden="true">🌎</span>
-                    <span class="liga-nombre">Copa Libertadores</span>
-                </div>
-            </nav>
+            <div class="widget-title">🏆 Ligas Populares</div>
+            <div class="liga-item"><span class="liga-flag">🇦🇷</span><span class="liga-nombre">Liga Argentina</span></div>
+            <div class="liga-item"><span class="liga-flag">🇲🇽</span><span class="liga-nombre">Liga MX</span></div>
+            <div class="liga-item"><span class="liga-flag">🇧🇷</span><span class="liga-nombre">Brasileirao</span></div>
+            <div class="liga-item"><span class="liga-flag">🇨🇴</span><span class="liga-nombre">Liga Colombia</span></div>
+            <div class="liga-item"><span class="liga-flag">🇨🇱</span><span class="liga-nombre">Primera Chile</span></div>
+            <div class="liga-item"><span class="liga-flag">🌎</span><span class="liga-nombre">Copa Libertadores</span></div>
         </div>
 
-        <!-- Widget Canales -->
         <div class="widget">
-            <h3 class="widget-title">📺 Dónde Ver</h3>
-            <nav aria-label="Canales de transmisión" role="navigation">
-                <div class="liga-item" tabindex="0" role="button" aria-label="ESPN"><span class="liga-flag" aria-hidden="true">📡</span><span class="liga-nombre">ESPN</span></div>
-                <div class="liga-item" tabindex="0" role="button" aria-label="Fox Sports"><span class="liga-flag" aria-hidden="true">📡</span><span class="liga-nombre">Fox Sports</span></div>
-                <div class="liga-item" tabindex="0" role="button" aria-label="TNT Sports"><span class="liga-flag" aria-hidden="true">📡</span><span class="liga-nombre">TNT Sports</span></div>
-                <div class="liga-item" tabindex="0" role="button" aria-label="Star+"><span class="liga-flag" aria-hidden="true">📡</span><span class="liga-nombre">Star+</span></div>
-                <div class="liga-item" tabindex="0" role="button" aria-label="YouTube gratis"><span class="liga-flag" aria-hidden="true">📡</span><span class="liga-nombre">YouTube (gratis)</span></div>
-            </nav>
+            <div class="widget-title">📺 Dónde Ver</div>
+            <div class="liga-item"><span class="liga-flag">📡</span><span class="liga-nombre">ESPN</span></div>
+            <div class="liga-item"><span class="liga-flag">📡</span><span class="liga-nombre">Fox Sports</span></div>
+            <div class="liga-item"><span class="liga-flag">📡</span><span class="liga-nombre">TNT Sports</span></div>
+            <div class="liga-item"><span class="liga-flag">📡</span><span class="liga-nombre">Star+</span></div>
+            <div class="liga-item"><span class="liga-flag">📡</span><span class="liga-nombre">YouTube (gratis)</span></div>
         </div>
 
     </aside>
 </div>
 
-<!-- ── Footer ────────────────────────────────────────────── -->
-<footer role="contentinfo">
+<!-- ── Footer ────────────────────────────────────────── -->
+<footer>
     <p>⚽ <strong>AgendaDeportiva LATAM</strong> — Picks IA · Horarios y resultados deportivos</p>
     <p style="margin-top:8px">
-        <a href="#inicio">Inicio</a> ·
-        <a href="#privacidad">Privacidad</a> ·
+        <a href="#">Inicio</a> ·
+        <a href="#">Privacidad</a> ·
         <a href="https://t.me/agendafutbol_bot" target="_blank" rel="noopener">Telegram</a>
     </p>
     <p style="margin-top:8px; font-size:0.75rem">
@@ -868,12 +631,8 @@
     let activeTab  = 'vivo';
 
     function setTab(tab, el) {
-        document.querySelectorAll('[role="tab"]').forEach(t => {
-            t.classList.remove('active');
-            t.setAttribute('aria-selected', 'false');
-        });
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         el.classList.add('active');
-        el.setAttribute('aria-selected', 'true');
         activeTab = tab;
         renderMatchesByTab();
     }
@@ -926,7 +685,7 @@
                 ? `<div class="partido-stale">⚠ Datos de ${timeAgo(m.last_polled_at)}</div>`
                 : '';
 
-            const card = document.createElement('article');
+            const card = document.createElement('div');
             card.className = `partido-card ${isLive || isHalf ? 'en-vivo' : ''} ${isFinished ? 'finalizado' : ''}`;
             card.innerHTML = `
                 <div class="partido-meta">
@@ -935,12 +694,12 @@
                 </div>
                 <div class="partido-equipos">
                     <div class="equipo">
-                        <span class="equipo-escudo" aria-hidden="true">⚽</span>
+                        <span class="equipo-escudo">⚽</span>
                         <div class="equipo-nombre">${escText(m.home_team)}</div>
                     </div>
-                    <div class="marcador" aria-label="Marcador: ${marcador.replace(/ - /g, ' a ')}">${marcador}</div>
+                    <div class="marcador">${marcador}</div>
                     <div class="equipo">
-                        <span class="equipo-escudo" aria-hidden="true">⚽</span>
+                        <span class="equipo-escudo">⚽</span>
                         <div class="equipo-nombre">${escText(m.away_team)}</div>
                     </div>
                 </div>
@@ -964,7 +723,7 @@
             const matchup   = [pick.home_team, pick.away_team].filter(Boolean).join(' vs ');
             const shareText = `⚽ Pick IA — ${matchup}\n\n${pick.content_text}\n\n${CONFIG.telegramLink}`;
 
-            const card = document.createElement('article');
+            const card = document.createElement('div');
             card.className = 'pick-card';
 
             const pickP = document.createElement('p');
@@ -982,7 +741,6 @@
             const shareBtn = document.createElement('button');
             shareBtn.className = 'pick-share-btn';
             shareBtn.innerHTML = '📤 Compartir con tu grupo';
-            shareBtn.setAttribute('aria-label', `Compartir pick: ${matchup}`);
             shareBtn.onclick   = () => shareContent(shareText);
             card.appendChild(shareBtn);
 
@@ -1056,11 +814,6 @@
         '📅 ' + new Date().toLocaleDateString('es-ES', {
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         });
-
-    // Event listeners para tabs con accesibilidad
-    document.getElementById('tab-vivo').addEventListener('click', function() { setTab('vivo', this); });
-    document.getElementById('tab-hoy').addEventListener('click', function() { setTab('hoy', this); });
-    document.getElementById('tab-manana').addEventListener('click', function() { setTab('manana', this); });
 
     loadAndRender();
     setInterval(loadAndRender, CONFIG.refreshIntervalMs);
